@@ -1,12 +1,12 @@
-use std::fs;
-
 fn main() {
-    let calories: i64 = fs::read_to_string("./input.txt")
-        .expect("Could not read input!")
+    let mut calories: Vec<i64> = include_str!("input.txt")
         .split("\r\n\r\n")
         .map(|s| s.split("\r\n").map(|s| s.parse::<i64>().unwrap()).sum())
-        .max()
-        .unwrap();
+        .collect();
 
-    println!("{}", calories);
+    calories.sort();
+
+    let top_three_total: i64 = calories.iter().rev().take(3).sum();
+
+    println!("{top_three_total}")
 }
