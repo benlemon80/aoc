@@ -6,7 +6,8 @@ fn main() {
 
     calories.sort();
 
-    let top_three_total: i64 = calories.iter().rev().take(3).sum();
+    let top = calories.iter().max().unwrap();
+    let total: i64 = calories.iter().rev().take(3).sum();
 
-    println!("{top_three_total}")
+    println!("{}, {}", top, total)
 }
