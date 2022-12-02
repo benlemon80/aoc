@@ -16,7 +16,7 @@ fn main() {
         if (elf + 1) % 3 == you {
             p1 += 6;
         } else if elf == you {
-            p2 += 3;
+            p1 += 3;
         }
 
         let mut res = elf + 3;
