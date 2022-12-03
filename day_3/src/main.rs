@@ -7,31 +7,25 @@ fn main() {
 
     let rucksacks: Vec<&str> = include_str!("input.txt").lines().collect();
 
-    let part_1: i32 = rucksacks
-        .iter()
-        .map(|l| {
-            let (one, two) = l.split_at(l.len() / 2);
+    let part_1: i32 = rucksacks.iter().fold(0, |acc, l| {
+        let (one, two) = l.split_at(l.len() / 2);
 
-            let shared: Vec<char> = one
-                .chars()
-                .filter(|c1| two.chars().any(|c2| &c2 == c1))
-                .collect();
+        let shared: Vec<char> = one
+            .chars()
+            .filter(|c1| two.chars().any(|c2| &c2 == c1))
+            .collect();
 
-            priorities.iter().position(|&d| d == shared[0]).unwrap() as i32 + 1
-        })
-        .sum();
+        acc + priorities.iter().position(|&d| d == shared[0]).unwrap() as i32 + 1
+    });
 
-    let part_2: i32 = rucksacks
-        .chunks(3)
-        .map(|g| {
-            let badge: Vec<char> = g[0]
-                .chars()
-                .filter(|c1| g[1].chars().any(|c2| &c2 == c1) && g[2].chars().any(|c3| &c3 == c1))
-                .collect();
+    let part_2: i32 = rucksacks.chunks(3).fold(0, |acc, g| {
+        let badge: Vec<char> = g[0]
+            .chars()
+            .filter(|c1| g[1].chars().any(|c2| &c2 == c1) && g[2].chars().any(|c3| &c3 == c1))
+            .collect();
 
-            priorities.iter().position(|&d| d == badge[0]).unwrap() as i32 + 1
-        })
-        .sum();
+        acc + priorities.iter().position(|&d| d == badge[0]).unwrap() as i32 + 1
+    });
 
     println!("{}, {}", part_1, part_2);
 }
