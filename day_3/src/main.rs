@@ -1,11 +1,8 @@
 fn main() {
-    let priorities = [
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
-        's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    ];
-
     let rucksacks: Vec<&str> = include_str!("input.txt").lines().collect();
+
+    const PRIORITIES: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let pri = |c: &char| -> usize { PRIORITIES.chars().position(|d| &d == c).unwrap() + 1 };
 
     let part_1 = rucksacks.iter().fold(0, |acc, l| {
         let (one, two) = l.split_at(l.len() / 2);
@@ -15,7 +12,7 @@ fn main() {
             .filter(|c1| two.chars().any(|c2| &c2 == c1))
             .collect();
 
-        acc + priorities.iter().position(|&d| d == shared[0]).unwrap() + 1
+        acc + pri(&shared[0])
     });
 
     let part_2 = rucksacks.chunks(3).fold(0, |acc, g| {
@@ -24,7 +21,7 @@ fn main() {
             .filter(|c1| g[1].chars().any(|c2| &c2 == c1) && g[2].chars().any(|c3| &c3 == c1))
             .collect();
 
-        acc + priorities.iter().position(|&d| d == badge[0]).unwrap() + 1
+        acc + pri(&badge[0])
     });
 
     println!("{}, {}", part_1, part_2);
