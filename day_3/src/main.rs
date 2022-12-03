@@ -1,9 +1,6 @@
 fn main() {
     let rucksacks: Vec<&str> = include_str!("input.txt").lines().collect();
 
-    const PRIORITIES: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let pri = |c: &char| -> usize { PRIORITIES.chars().position(|d| &d == c).unwrap() + 1 };
-
     let part_1 = rucksacks.iter().fold(0, |acc, l| {
         let (one, two) = l.split_at(l.len() / 2);
 
@@ -12,7 +9,7 @@ fn main() {
             .filter(|c1| two.chars().any(|c2| &c2 == c1))
             .collect();
 
-        acc + pri(&shared[0])
+        acc + priority(shared[0])
     });
 
     let part_2 = rucksacks.chunks(3).fold(0, |acc, g| {
@@ -21,8 +18,13 @@ fn main() {
             .filter(|c1| g[1].chars().any(|c2| &c2 == c1) && g[2].chars().any(|c3| &c3 == c1))
             .collect();
 
-        acc + pri(&badge[0])
+        acc + priority(badge[0])
     });
 
     println!("{}, {}", part_1, part_2);
+}
+
+fn priority(c: char) -> i32 {
+    let diff = if c.is_uppercase() { 38 } else { 96 };
+    c as i32 - diff
 }
