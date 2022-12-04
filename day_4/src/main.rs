@@ -9,11 +9,7 @@ fn check_contains(n: &Vec<i32>) -> bool {
 fn main() {
     let digits: Vec<Vec<i32>> = include_str!("input.txt")
         .lines()
-        .map(|l| {
-            l.split(&[',', '-'])
-                .map(|s| s.parse::<i32>().unwrap())
-                .collect()
-        })
+        .map(|l| l.split(&[',', '-']).map(|s| s.parse().unwrap()).collect())
         .collect();
 
     let part_1 = digits
