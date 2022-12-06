@@ -29,7 +29,7 @@ fn main() {
             let (count, from, to) = (step[0], step[1] - 1, step[2] - 1);
             let range = stacks[from].len() - count..;
             let crates: Vec<&str> = stacks[from].drain(range).collect();
-            
+
             // For part two, remove this .rev()
             crates.iter().rev().for_each(|c| stacks[to].push(c));
         });
