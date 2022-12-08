@@ -1,5 +1,3 @@
-use std::cmp::Ordering;
-
 fn main() {
     let grid: Vec<Vec<u32>> = include_str!("input.txt")
         .lines()
@@ -44,12 +42,9 @@ fn is_tall(tree: &u32, trees: Vec<u32>) -> bool {
 fn score(tree: &u32, trees: &Vec<u32>) -> u32 {
     let mut score = 0;
     for t in trees {
-        match t.cmp(tree) {
-            Ordering::Less => score += 1,
-            Ordering::Greater | Ordering::Equal => {
-                score += 1;
-                break;
-            }
+        score += 1;
+        if t >= tree {
+            break;
         }
     }
     score
