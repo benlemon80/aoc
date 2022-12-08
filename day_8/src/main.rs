@@ -11,41 +11,40 @@ fn main() {
 
     for (i, row) in grid.iter().enumerate() {
         for (j, item) in row.iter().enumerate() {
-            let left: Vec<u32> = row[0..j].iter().rev().map(|x| *x).collect();
-
-            let right: Vec<u32> = row[j + 1..grid[0].len()].iter().map(|x| *x).collect();
-
-            let top: Vec<u32> = grid[0..i].iter().rev().map(|r| r[j]).collect();
-
-            let bottom: Vec<u32> = grid[i + 1..grid.len()].iter().map(|r| r[j]).collect();
+            let befor: Vec<u32> = row[0..j].iter().rev().map(|x| *x).collect();
+            let after: Vec<u32> = row[j + 1..grid[0].len()].iter().map(|x| *x).collect();
+            let above: Vec<u32> = grid[0..i].iter().rev().map(|r| r[j]).collect();
+            let below: Vec<u32> = grid[i + 1..grid.len()].iter().map(|r| r[j]).collect();
 
             scenic_score = std::cmp::max(
-                score(item, &top) * score(item, &left) * score(item, &bottom) * score(item, &right),
+                score(item, &above)
+                    * score(item, &befor)
+                    * score(item, &below)
+                    * score(item, &after),
                 scenic_score,
             );
 
-            if is_tall(item, left)
-                || is_tall(item, right)
-                || is_tall(item, top)
-                || is_tall(item, bottom)
+            if is_tall(item, befor)
+                || is_tall(item, after)
+                || is_tall(item, above)
+                || is_tall(item, below)
             {
                 visible += 1;
             }
         }
     }
 
-    println!("{visible}");
-    println!("{scenic_score}");
+    println!("{visible}, {scenic_score}");
 }
 
-fn is_tall(val: &u32, vec: Vec<u32>) -> bool {
-    vec.iter().all(|x| x < val)
+fn is_tall(tree: &u32, trees: Vec<u32>) -> bool {
+    trees.iter().all(|t| t < tree)
 }
 
-fn score(val: &u32, vec: &Vec<u32>) -> u32 {
+fn score(tree: &u32, trees: &Vec<u32>) -> u32 {
     let mut score = 0;
-    for tree in vec {
-        match tree.cmp(val) {
+    for t in trees {
+        match t.cmp(tree) {
             Ordering::Less => score += 1,
             Ordering::Greater | Ordering::Equal => {
                 score += 1;
