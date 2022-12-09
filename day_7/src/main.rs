@@ -11,7 +11,7 @@ fn main() {
             ("$", "cd") => match args[2] {
                 "/" => {}
                 ".." => {
-                    cwd = Rc::clone(&cwd.parent.as_ref().unwrap());
+                    cwd = Rc::clone(cwd.parent.as_ref().unwrap());
                 }
                 dir => {
                     let new_folder = cwd.children.borrow().get(dir).unwrap().clone();
@@ -63,7 +63,7 @@ impl Folder {
         for child in self.children.borrow().values() {
             size += child.get_size();
         }
-        return size;
+        size
     }
 
     fn sum_children(&self) -> Vec<usize> {

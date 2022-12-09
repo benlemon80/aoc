@@ -9,23 +9,21 @@ fn main() {
 
     for (i, row) in grid.iter().enumerate() {
         for (j, item) in row.iter().enumerate() {
-            let befor: Vec<u32> = row[0..j].iter().rev().map(|x| *x).collect();
-            let after: Vec<u32> = row[j + 1..grid[0].len()].iter().map(|x| *x).collect();
-            let above: Vec<u32> = grid[0..i].iter().rev().map(|r| r[j]).collect();
-            let below: Vec<u32> = grid[i + 1..grid.len()].iter().map(|r| r[j]).collect();
+            let left: Vec<u32> = row[0..j].iter().rev().copied().collect();
+            let right: Vec<u32> = row[j + 1..grid[0].len()].to_vec();
+
+            let top: Vec<u32> = grid[0..i].iter().rev().map(|r| r[j]).collect();
+            let down: Vec<u32> = grid[i + 1..grid.len()].iter().map(|r| r[j]).collect();
 
             scenic_score = std::cmp::max(
-                score(item, &above)
-                    * score(item, &befor)
-                    * score(item, &below)
-                    * score(item, &after),
+                score(item, &top) * score(item, &left) * score(item, &down) * score(item, &right),
                 scenic_score,
             );
 
-            if is_tall(item, befor)
-                || is_tall(item, after)
-                || is_tall(item, above)
-                || is_tall(item, below)
+            if is_tall(item, top)
+                || is_tall(item, left)
+                || is_tall(item, down)
+                || is_tall(item, right)
             {
                 visible += 1;
             }
