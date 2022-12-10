@@ -3,8 +3,8 @@ use std::collections::HashSet;
 fn main() {
     const SIZE: usize = 10;
 
-    let mut trail: HashSet<Point> = HashSet::new();
-    let mut rope = vec![Point { x: 0, y: 0 }; SIZE];
+    let mut trail: HashSet<Knot> = HashSet::new();
+    let mut rope = vec![Knot { x: 0, y: 0 }; SIZE];
 
     for line in include_str!("input.txt").lines() {
         let args: Vec<&str> = line.split_whitespace().collect();
@@ -35,19 +35,19 @@ fn main() {
 }
 
 #[derive(Copy, Clone, Hash, PartialEq, Eq)]
-struct Point {
+struct Knot {
     x: i32,
     y: i32,
 }
 
-impl Point {
-    fn add(&mut self, x: i32, y: i32) -> Point {
+impl Knot {
+    fn add(&mut self, x: i32, y: i32) -> Knot {
         self.x += x;
         self.y += y;
         self.clone()
     }
 
-    fn move_to(&mut self, p: &mut Point) {
+    fn move_to(&mut self, p: &mut Knot) {
         let (dx, dy) = (p.x - self.x, p.y - self.y);
 
         if dx.abs() > 1 || dy.abs() > 1 {
@@ -57,10 +57,8 @@ impl Point {
                 self.add(dx / 2, 0);
             } else {
                 let x = if dx > 0 { 1 } else { -1 };
-                self.add(x, 0);
-
                 let y = if dy > 0 { 1 } else { -1 };
-                self.add(0, y);
+                self.add(x, y);
             }
         }
     }
